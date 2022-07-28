@@ -1,7 +1,9 @@
 <template>
   <section class="app-main">
     <transition name="fade-transform" mode="out-in">
-      <router-view :key="key" />
+      <keep-alive :include="cachedViews">
+        <router-view :key="key" />
+      </keep-alive>
     </transition>
   </section>
 </template>
@@ -12,6 +14,9 @@ export default {
   computed: {
     key() {
       return this.$route.path
+    },
+    cachedViews() {
+      return this.$store.getters.cachedViews
     }
   }
 }
@@ -19,13 +24,15 @@ export default {
 
 <style scoped>
 .app-main {
-  /*50 = navbar  */
-  min-height: calc(100vh - 50px);
-  width: 100%;
   position: relative;
+  width: 100%;
+
+  /* 50 = navbar  */
+  min-height: calc(100vh - 50px);
   overflow: hidden;
 }
-.fixed-header+.app-main {
+
+.fixed-header + .app-main {
   padding-top: 50px;
 }
 </style>

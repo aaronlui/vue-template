@@ -38,6 +38,8 @@ import Layout from '@/layout'
     icon: 'svg-name'/'el-icon-x' the icon show in the sidebar
     breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
     activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
+    cache: true                  如果设置为true，该页面将被<keep-alive>缓存
+    cachedName: 'cachedName'     需要缓存的页面名称，组件名称、路由名称需保持一致（需要设置组件名称）
   }
  */
 
@@ -186,7 +188,7 @@ export const asyncRoutes = [
 ]
 
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
+  mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })

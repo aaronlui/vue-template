@@ -29,6 +29,21 @@ router.beforeEach(async(to, from, next) => {
       // determine whether the user has obtained his permission roles through getInfo
       const hasRoles = store.getters.roles && store.getters.roles.length > 0
       if (hasRoles) {
+        const { cachedViews } = store.getters
+        // 清除除列表到详情外的缓存, 列表与详情需cachedName为对方name
+        if (to.meta.cachedName !== from.name) {
+          store.dispatch('app/delAllCachedViews')
+        }
+        // 后退时，逐个清除缓存链
+        cachedViews.forEach((name, index) => {
+          if (name === from.name && cachedViews[index - 1] && cachedViews[index - 1] === to.name) {
+            store.dispatch('app/delCachedView', from)
+          }
+        })
+        const { name } = to
+        if (name) {
+          store.dispatch('app/addCachedView', to)
+        }
         next()
       } else {
         try {
